@@ -23,21 +23,23 @@ memory = initial
 sto2 = update memory 'x' 4
 
 evalBoolExp::BoolExp -> Store -> Bool
-evalBoolExp (B val) _ = val -- testado
-evalBoolExp (No exp1) store =  not (evalBoolExp exp1 store) -- testado
-evalBoolExp (And' exp1 exp2) store = (evalBoolExp exp1 store) && (evalBoolExp exp2 store) -- testado
-evalBoolExp (Or' exp1 exp2) store = (evalBoolExp exp1 store) || (evalBoolExp exp2 store) -- testado
-evalBoolExp (Great exp1 exp2) store = (evalAritExp exp1 store) > (evalAritExp exp2 store)
-evalBoolExp (Less exp1 exp2) store = ( evalAritExp exp1 store) < (evalAritExp exp2 store)
-evalBoolExp (Equal exp1 exp2) store = ( evalAritExp exp1 store) == (evalAritExp exp2 store)
+evalBoolExp (B val) _ 				= val -- testado
+evalBoolExp (No exp1) store 		=  not (evalBoolExp exp1 store) -- testado
+evalBoolExp (And' exp1 exp2) store 	= (evalBoolExp exp1 store) && (evalBoolExp exp2 store) -- testado
+evalBoolExp (Or' exp1 exp2) store 	= (evalBoolExp exp1 store) || (evalBoolExp exp2 store) -- testado
+evalBoolExp (Great exp1 exp2) store = (evalAritExp exp1 store) > (evalAritExp exp2 store) -- testado
+evalBoolExp (Less exp1 exp2) store 	= (evalAritExp exp1 store) < (evalAritExp exp2 store) -- testado
+evalBoolExp (Equal exp1 exp2) store = ( evalAritExp exp1 store) == (evalAritExp exp2 store) -- testado
 
 evalAritExp:: AritExp-> Store -> Integer
-evalAritExp (L val) _ = val -- testado
-evalAritExp (V c) store = value store c -- testado
-evalAritExp (Sub exp1 exp2) store = (evalAritExp exp1 store) - (evalAritExp exp2 store) -- testado
-evalAritExp (Add exp1 exp2) store = (evalAritExp exp1 store) + (evalAritExp exp2 store) -- testado
-evalAritExp (Mult exp1 exp2) store = (evalAritExp exp1 store) * (evalAritExp exp2 store)
-evalAritExp (Div exp1 exp2) store = (evalAritExp exp1 store) `div` (evalAritExp exp2 store)
+evalAritExp (L val) _ 				= val -- testado
+evalAritExp (V c) store 			= value store c -- testado
+evalAritExp (Sub exp1 exp2) store 	= (evalAritExp exp1 store) - (evalAritExp exp2 store) -- testado
+evalAritExp (Add exp1 exp2) store 	= (evalAritExp exp1 store) + (evalAritExp exp2 store) -- testado
+evalAritExp (Mult exp1 exp2) store 	= (evalAritExp exp1 store) * (evalAritExp exp2 store) -- testado
+evalAritExp (Div exp1 exp2) store 	= (evalAritExp exp1 store) `div` (evalAritExp exp2 store) -- testado
+
+teste = evalAritExp (Mult (V 'x') (Div (L 20) (L 10)))  sto2
 
 -- Inicio de um programa
 atrib00 = Atrib 'f' (L 1)
