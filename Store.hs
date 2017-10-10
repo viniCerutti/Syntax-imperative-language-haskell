@@ -47,6 +47,9 @@ update  :: Store -> Var -> Integer -> Store
 
 update (Store sto) v n = Store ((n,v):sto)
 
+---------------------------
+-- Função Deprezada
+---------------------------
 -- Une dois Store onde o segundo une com o primeiro
 joinStore :: Store -> Store -> Store
 joinStore (Store []) (Store store) = (Store store)
