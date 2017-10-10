@@ -13,7 +13,8 @@ module Store
    ( Store, 
      initial,     -- Store
      value,       -- Store -> Var -> Integer
-     update       -- Store -> Var -> Integer -> Store
+     update,       -- Store -> Var -> Integer -> Store
+     joinStore	  -- Store -> Store -> Store
     ) where
 
 -- Var is the type of variables.                    
@@ -45,4 +46,10 @@ value (Store ((n,w):sto)) v
 update  :: Store -> Var -> Integer -> Store
 
 update (Store sto) v n = Store ((n,v):sto)
+
+-- Une dois Store onde o segundo une com o primeiro
+joinStore :: Store -> Store -> Store
+joinStore (Store []) (Store store) = (Store store)
+joinStore (Store store) (Store []) = (Store store)
+joinStore (Store store) (Store ((n,w):store2)) = joinStore (update (Store store) w n) (Store store2)
 
