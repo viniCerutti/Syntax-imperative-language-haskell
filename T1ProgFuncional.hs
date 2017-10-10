@@ -13,9 +13,8 @@ data BoolExp =  B Bool                | No BoolExp          |
                 Equal AritExp AritExp  deriving (Show,Eq,Ord)
                 
 -- Data que guarda os comandos para nossa lingugagem
-data Commands = Atrib Char AritExp                |
-                Seq Commands Commands             |
-                Choice BoolExp Commands Commands  |
+data Commands = Nop								  | Atrib Char AritExp                |
+                Seq Commands Commands             | Choice BoolExp Commands  		  | -- por que 3 comandos?
                 Loop BoolExp Commands deriving (Show)
 
 memory = initial
@@ -40,6 +39,7 @@ evalAritExp (Mult exp1 exp2) store 	= (evalAritExp exp1 store) * (evalAritExp ex
 evalAritExp (Div exp1 exp2) store 	= (evalAritExp exp1 store) `div` (evalAritExp exp2 store) -- testado
 
 evalCommands::Commands -> Store -> Store
+evalCommands (Nop) store = store
 evalCommands (Atrib name val) store = update store name (evalAritExp val store)
 evalCommands (Seq comd1 comd2) store = joinStore(evalCommands comd1 store) (evalCommands comd2 store) 
 
