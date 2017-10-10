@@ -39,6 +39,11 @@ evalAritExp (Add exp1 exp2) store 	= (evalAritExp exp1 store) + (evalAritExp exp
 evalAritExp (Mult exp1 exp2) store 	= (evalAritExp exp1 store) * (evalAritExp exp2 store) -- testado
 evalAritExp (Div exp1 exp2) store 	= (evalAritExp exp1 store) `div` (evalAritExp exp2 store) -- testado
 
+evalCommands::Commands -> Store -> Store
+evalCommands (Atrib name val) store = update store name (evalAritExp val store)
+evalCommands (Seq comd1 comd2) store = joinStore(evalCommands comd1 store) (evalCommands comd2 store) 
+
+
 teste = evalAritExp (Mult (V 'x') (Div (L 20) (L 10)))  sto2
 
 -- Inicio de um programa
