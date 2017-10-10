@@ -14,7 +14,7 @@ data BoolExp =  B Bool                | No BoolExp          |
                 
 -- Data que guarda os comandos para nossa lingugagem
 data Commands = Nop								  | Atrib Char AritExp                |
-                Seq Commands Commands             | Choice BoolExp Commands  		  | -- por que 3 comandos?
+                Seq Commands Commands             | Choice BoolExp Commands Commands  | -- Choice seria um If then else
                 Loop BoolExp Commands deriving (Show)
 
 memory = initial
@@ -41,18 +41,30 @@ evalAritExp (Div exp1 exp2) store 	= (evalAritExp exp1 store) `div` (evalAritExp
 evalCommands::Commands -> Store -> Store
 evalCommands (Nop) store = store
 evalCommands (Atrib name val) store = update store name (evalAritExp val store)
-evalCommands (Seq comd1 comd2) store = joinStore(evalCommands comd1 store) (evalCommands comd2 store) 
+evalCommands (Seq comd1 comd2) store =  (evalCommands comd2 (evalCommands comd1 store)) -- comd2 utiliza o store do comd1
+evalCommands (Choice expbool comd1 comd2) store = evalCommands (funcChoice expbool comd1 comd2 store) store
 
+funcChoice :: BoolExp -> Commands -> Commands -> Store -> Commands
+funcChoice expBool comd1 comd2 store
+	| evalBoolExp expBool store = comd1
+	| otherwise = comd2
 
 teste = evalAritExp (Mult (V 'x') (Div (L 20) (L 10)))  sto2
 
 -- Inicio de um programa
-atrib00 = Atrib 'f' (L 1)
+--atrib00 = Atrib 'f' (L 1)
 
-atrib00Loop = Great (V 'n') (L 0)
-atrib01Loop = Atrib 'f' (Mult(V 'f') (V 'n'))
-atrib02Loop = Atrib 'n' (Sub(V 'n') (L 1))
-loop = Loop atrib00Loop (Seq atrib01Loop atrib02Loop)
+--atrib00Loop = Great (V 'n') (L 0)
+--atrib01Loop = Atrib 'f' (Mult(V 'f') (V 'n'))
+--atrib02Loop = Atrib 'n' (Sub(V 'n') (L 1))
+--loop = Loop atrib00Loop (Seq atrib01Loop atrib02Loop)
 
-prog = Seq atrib00 loop         
+--prog = Seq atrib00 loop
 
+-- Inicio programa 2
+atrib00 = Atrib 'f' (L 4)
+atrib00If = Equal (V 'f') (L 0)
+atrib01If = Atrib 'f' (Mult (V 'f') (L 2))
+atrib01 = Atrib 'n' (L 12)
+seqif = Choice atrib00If atrib01If atrib01
+prog = Seq atrib00 seqif
