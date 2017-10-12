@@ -15,7 +15,7 @@ data BoolExp =  B Bool                | No BoolExp          |
 -- Data que guarda os comandos para nossa lingugagem
 data Commands = Nop								  | Atrib Char AritExp                |
                 Seq Commands Commands             | Choice BoolExp Commands Commands  | -- Choice seria um If then else
-                Loop BoolExp Commands deriving (Show)
+                Loop1 BoolExp Commands 			  |	Loop2  Commands BoolExp	deriving (Show)
 
 memory = initial
 
@@ -43,7 +43,9 @@ evalCommands (Nop) store = store
 evalCommands (Atrib name val) store = update store name (evalAritExp val store)
 evalCommands (Seq comd1 comd2) store =  (evalCommands comd2 (evalCommands comd1 store)) -- comd2 utiliza o store do comd1
 evalCommands (Choice expbool comd1 comd2) store = evalCommands (funcChoice expbool comd1 comd2 store) store
-evalCommands ( Loop expbool comd) store = funcLoop expbool comd store
+evalCommands ( Loop1 expbool comd) store = funcLoop expbool comd store
+evalCommands ( Loop2 comd expbool) store = funcLoop expbool comd store
+
 funcChoice :: BoolExp -> Commands -> Commands -> Store -> Commands
 funcChoice expBool comd1 comd2 store
 	| evalBoolExp expBool store = comd1
@@ -63,8 +65,9 @@ teste = evalAritExp (Mult (V 'x') (Div (L 20) (L 10)))  sto2
 
 atrib00Loop = Less (V 'n') (L 5)
 atrib01Loop = Atrib 'n' (Add(V 'n') (L 1))
---atrib02Loop = Atrib 'n' (Sub(V 'n') (L 1))
-loop = Loop atrib00Loop atrib01Loop
+atrib02Loop = Atrib 'f' (Mult(V 'f') (L 2))
+atrib03Loop = Atrib 'f' (Add(V 'f') (L 1))
+loop = Loop2 (Seq (Seq atrib01Loop atrib02Loop) atrib03Loop) atrib00Loop
 
 --prog = Seq atrib00 loop
 
