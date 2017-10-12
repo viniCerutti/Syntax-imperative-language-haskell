@@ -43,27 +43,34 @@ evalCommands (Nop) store = store
 evalCommands (Atrib name val) store = update store name (evalAritExp val store)
 evalCommands (Seq comd1 comd2) store =  (evalCommands comd2 (evalCommands comd1 store)) -- comd2 utiliza o store do comd1
 evalCommands (Choice expbool comd1 comd2) store = evalCommands (funcChoice expbool comd1 comd2 store) store
-
+evalCommands ( Loop expbool comd) store = funcLoop expbool comd store
 funcChoice :: BoolExp -> Commands -> Commands -> Store -> Commands
 funcChoice expBool comd1 comd2 store
 	| evalBoolExp expBool store = comd1
 	| otherwise = comd2
+
+funcLoop :: BoolExp -> Commands -> Store -> Store
+funcLoop expBool comd store
+	| evalBoolExp expBool store =  funcLoop expBool comd command 
+	| otherwise = store
+		where
+			command = evalCommands comd store
 
 teste = evalAritExp (Mult (V 'x') (Div (L 20) (L 10)))  sto2
 
 -- Inicio de um programa
 --atrib00 = Atrib 'f' (L 1)
 
---atrib00Loop = Great (V 'n') (L 0)
---atrib01Loop = Atrib 'f' (Mult(V 'f') (V 'n'))
+atrib00Loop = Less (V 'n') (L 5)
+atrib01Loop = Atrib 'n' (Add(V 'n') (L 1))
 --atrib02Loop = Atrib 'n' (Sub(V 'n') (L 1))
---loop = Loop atrib00Loop (Seq atrib01Loop atrib02Loop)
+loop = Loop atrib00Loop atrib01Loop
 
 --prog = Seq atrib00 loop
 
 -- Inicio programa 2
 atrib00 = Atrib 'f' (L 4)
-atrib00If = Equal (V 'f') (L 0)
+atrib00If = Equal (V 'f') (L 5)
 atrib01If = Atrib 'f' (Mult (V 'f') (L 2))
 atrib01 = Atrib 'n' (L 12)
 seqif = Choice atrib00If atrib01If atrib01
