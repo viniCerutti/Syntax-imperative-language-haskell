@@ -57,24 +57,30 @@ funcLoop expBool comd store
 	| otherwise = store
 		where
 			command = evalCommands comd store
+{-
+	int n = 2, f = 0, w = 0;
+	if ( (n/2) == 1){
+      	n = n * 2;
+    }
+    
+     do{
+       f = f + 1;
+     }while (f < 10);
+    
+     w = 100;
+-}
 
-teste = evalAritExp (Mult (V 'x') (Div (L 20) (L 10)))  sto2
+atrib00 = Atrib 'n' (L 2)
+atrib01 = Atrib 'f' (L 0)
+atrib02 = Atrib 'w' (L 0)
+atrib03 = Atrib 'w' (L 100)
+ifexpAux = Div (V 'n') (L 2)
+ifexp = Equal ifexpAux (L 1)
+atribDentroIf = Atrib 'n' (Mult (V 'n') (L 2))
+boolLoop = Less (V 'f') (L 10)
+atribDentroEnq = Atrib 'f' (Add (V 'f') (L 1))
+loop = Loop2 atribDentroEnq boolLoop 
 
--- Inicio de um programa
---atrib00 = Atrib 'f' (L 1)
+ifprog = Choice ifexp atribDentroIf Nop
 
-atrib00Loop = Less (V 'n') (L 5)
-atrib01Loop = Atrib 'n' (Add(V 'n') (L 1))
-atrib02Loop = Atrib 'f' (Mult(V 'f') (L 2))
-atrib03Loop = Atrib 'f' (Add(V 'f') (L 1))
-loop = Loop2 (Seq (Seq atrib01Loop atrib02Loop) atrib03Loop) atrib00Loop
-
---prog = Seq atrib00 loop
-
--- Inicio programa 2
-atrib00 = Atrib 'f' (L 4)
-atrib00If = Equal (V 'f') (L 5)
-atrib01If = Atrib 'f' (Mult (V 'f') (L 2))
-atrib01 = Atrib 'n' (L 12)
-seqif = Choice atrib00If atrib01If atrib01
-prog = Seq atrib00 seqif
+prog = Seq atrib00 (Seq (Seq atrib02 (Seq atrib01 (Seq ifprog loop))) atrib03)
