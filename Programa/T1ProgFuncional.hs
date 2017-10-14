@@ -17,10 +17,6 @@ data Commands = Nop								  | Atrib Char AritExp                |
                 Seq Commands Commands             | Choice BoolExp Commands Commands  | -- Choice seria um If then else
                 Loop1 BoolExp Commands 			  |	Loop2  Commands BoolExp	deriving (Show)
 
-memory = initial
-
-sto2 = update memory 'x' 4
-
 evalBoolExp::BoolExp -> Store -> Bool
 evalBoolExp (B val) _ 				= val -- testado
 evalBoolExp (No exp1) store 		=  not (evalBoolExp exp1 store) -- testado
@@ -57,30 +53,3 @@ funcLoop expBool comd store
 	| otherwise = store
 		where
 			command = evalCommands comd store
-{-
-	int n = 2, f = 0, w = 0;
-	if ( (n/2) == 1){
-      	n = n * 2;
-    }
-    
-     do{
-       f = f + 1;
-     }while (f < 10);
-    
-     w = 100;
--}
-
-atrib00 = Atrib 'n' (L 2)
-atrib01 = Atrib 'f' (L 0)
-atrib02 = Atrib 'w' (L 0)
-atrib03 = Atrib 'w' (L 100)
-ifexpAux = Div (V 'n') (L 2)
-ifexp = Equal ifexpAux (L 1)
-atribDentroIf = Atrib 'n' (Mult (V 'n') (L 2))
-boolLoop = Less (V 'f') (L 10)
-atribDentroEnq = Atrib 'f' (Add (V 'f') (L 1))
-loop = Loop2 atribDentroEnq boolLoop 
-
-ifprog = Choice ifexp atribDentroIf Nop
-
-prog = Seq atrib00 (Seq (Seq atrib02 (Seq atrib01 (Seq ifprog loop))) atrib03)
