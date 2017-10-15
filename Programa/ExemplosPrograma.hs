@@ -54,24 +54,40 @@ resultFat = value (evalCommands fatorial memoryFat) 'r'
 
 	  int n, m; // multiplicando e multiplicador da multiplicacao
 	  int r = 0;
-	 do{
-	     r = r+m;
-	     n = n - 1;
-	 }while(n > 0);
+	 if(n >= 0){
+	    while(n > 0){
+	         r = r+m;
+    	     n = n - 1;
+	    }
+	 }else{
+	      do{
+    	     r = r-m;
+    	     n = n + 1;
+	    }while(n < 0);
+	 }
 
 -}
 
 memoryMult = initial
 
-multAtribN = Atrib 'n' (L 4) -- numero multiplicando
-multAtribM = Atrib 'm' (L 4) -- numero multiplicador
+multAtribN = Atrib 'n' (L 3) -- numero multiplicando
+multAtribM = Atrib 'm' (L 3) -- numero multiplicador
 multAtribR = Atrib 'r' (L 0) -- variavel para guardar o resultado
-multBoolLoop = Great (V 'n') (L 0) -- expressao n > 0 do loop
-multAtrib1Loop = Atrib 'r' (Add (V 'r') (V 'm')) -- r = r + m
-multAtrib2Loop = Atrib 'n' (Sub (V 'n') (L 1)) -- n = n - 1
+multExp1If = Great (V 'n') (L 0) -- expressao do if se n > 0
+multExp2If = Equal (V 'n') (L 0) -- expressao do if se n = 0	
+multBoolLoop1 = Great (V 'n') (L 0) -- expressao n > 0 do primeiro loop
+multAtrib1Loop1 = Atrib 'r' (Add (V 'r') (V 'm')) -- r = r + m
+multAtrib2Loop1 = Atrib 'n' (Sub (V 'n') (L 1)) -- n = n - 1
+multBoolLoop2 = Less (V 'n') (L 0) -- expressao n > 0 do primeiro loop
+multAtrib1Loop2 = Atrib 'r' (Sub (V 'r') (V 'm')) -- r = r + m
+multAtrib2Loop2 = Atrib 'n' (Add (V 'n') (L 1)) -- n = n - 1
 
-multLoop = Loop2 (Seq multAtrib1Loop multAtrib2Loop) multBoolLoop
 
-multiplicao = Seq multAtribN (Seq multAtribM (Seq multAtribR multLoop))
+multLoop1 = Loop1 multBoolLoop1 (Seq multAtrib1Loop1 multAtrib2Loop1)
+multLoop2 = Loop2 (Seq multAtrib1Loop2 multAtrib2Loop2) multBoolLoop2
+
+multIf = Choice (Or' multExp1If multExp2If) multLoop1 multLoop2
+
+multiplicao = Seq multAtribN (Seq multAtribM (Seq multAtribR multIf))
 
 resultMult = value (evalCommands multiplicao memoryMult) 'r'
