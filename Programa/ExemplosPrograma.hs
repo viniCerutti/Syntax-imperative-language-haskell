@@ -8,7 +8,7 @@ import Store
 
 	Em outra linguagem de programacao
 
-	  int n, m; // n é o numero para se calcular o fatorial
+	  int n=4, m = 0; // n é o numero para se calcular o fatorial
 	  int r = 1;
 
 	  while (n > 0) {
@@ -27,7 +27,6 @@ import Store
 
 memoryFat = initial
 
--- atribuicao inicial de n
 fatAtribN = Atrib 'n' (L 4) -- numero que se deseja descobrir o fatorial
 fatAtribM = Atrib 'm' (L 0) -- variavel auxiliar para realizar a somas sucessivas
 fatAtribR = Atrib 'r' (L 1) -- variavel para guardar o resultado
@@ -48,11 +47,11 @@ fatorial = Seq fatAtribN (Seq fatAtribM (Seq fatAtribR fatLoop1))
 resultFat = value (evalCommands fatorial memoryFat) 'r'
 
 {-
-	Programa 02: Calculo daa multiplicacao com apenas soma
+	Programa 02: Calculo da multiplicacao com apenas somas
 
 	Em outra lingugem de programacao
 
-	  int n, m; // multiplicando e multiplicador da multiplicacao
+	  int n=3, m=3; // multiplicando e multiplicador da multiplicacao
 	  int r = 0;
 	 if(n >= 0){
 	    while(n > 0){
@@ -109,7 +108,7 @@ resultMult = value (evalCommands multiplicao memoryMult) 'r'
 memoryPot = initial
 
 potAtribB = Atrib 'b' (L 3) -- numero base
-potAtribE = Atrib 'e' (L 3) -- numero expoente
+potAtribE = Atrib 'e' (L 2) -- numero expoente
 potAtribR = Atrib 'r' (L 1) -- variavel para guardar o resultado
 potBoolLoop = Great (V 'e') (L 0) -- expressao e > 0 do loop
 potAtrib1Loop = Atrib 'r' (Mult (V 'b') (V 'r')) -- r = r * b
@@ -126,7 +125,7 @@ resultPot = value (evalCommands potencia memoryPot) 'r'
 
 	Em outra lingugem de programacao
 
-	 int a=-3, b=2; // dividendo e divisor da divisão inteira
+	 int a=12, b=3; // dividendo e divisor da divisão inteira
 	 int r = 0;
 	 
 	 r = a/b;
@@ -134,7 +133,7 @@ resultPot = value (evalCommands potencia memoryPot) 'r'
 
 memoryDiv = initial
 
-divAtribB = Atrib 'a' (L 13) -- numero dividendo
+divAtribB = Atrib 'a' (L 12) -- numero dividendo
 divAtribE = Atrib 'b' (L 3) -- numero divisor
 divAtribR = Atrib 'r' (L 0) -- variavel para guardar o resultado
 divInt = Div (V 'a') (V 'b') -- a/b
@@ -142,3 +141,37 @@ divInt = Div (V 'a') (V 'b') -- a/b
 divisao = Seq divAtribB (Seq divAtribE (Atrib 'r' divInt))
 
 resultDiv = value (evalCommands divisao memoryDiv) 'r'
+
+{-
+	Programa 05: Calculo do MDC (maximo divisor comum)
+	Foi utilizado o algoritmo de euclides
+	
+	Em outra lingugem de programacao
+
+	int a=12, b = 9;
+    a = abs(a);
+    b = abs(b);
+    
+    while (b != 0){
+       int t = b;
+       b = a % b;
+       a = t;
+    }
+-}
+
+memoryMdc = initial
+
+mdcAtribA = Atrib 'a' (L 12) -- primeiro numero do mdc
+mdcAtribB = Atrib 'b' (L 9) -- segundo numero do mdc
+mdcAtribAbs1 = Atrib 'a' (Abs' (V 'a')) -- a = abs(a);
+mdcAtribAbs2 = Atrib 'b' (Abs' (V 'b')) -- a = abs(a);
+mdcBoolLoop = No (Equal (V 'b') (L 0)) -- b != 0
+mdcAtrib1Loop = Atrib 't' (V 'b') -- int t = b;
+mdcAtrib2Loop = Atrib 'b' (Mod' (V 'a') (V 'b')) -- b = a % b;
+mdcAtrib3Loop = Atrib 'a' (V 't') -- a = t;
+
+mdcLoop = Loop1 mdcBoolLoop (Seq mdcAtrib1Loop (Seq mdcAtrib2Loop mdcAtrib3Loop))
+
+mdc = Seq mdcAtribA (Seq mdcAtribB (Seq mdcAtribAbs1 (Seq mdcAtribAbs2 mdcLoop)))
+
+resultMdc = value (evalCommands mdc memoryMdc) 'a'
