@@ -1,4 +1,10 @@
-module T1ProgFuncional where
+{-
+    T1 - Programacao Funcional 2017/2
+    Vinicius Cerutti
+    Dimas Olympio
+-}
+
+module InterpLingImpHaskell where
 
 import Store
 -- Data que guarda as operacoes aritmeticas
