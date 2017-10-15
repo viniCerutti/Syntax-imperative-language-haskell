@@ -4,24 +4,24 @@ import T1ProgFuncional
 import Store
 
 {-
-	Programa 01: Calculo do fatorial com apenas somas
+    Programa 01: Calculo do fatorial com apenas somas
 
-	Em outra linguagem de programacao
+    Em outra linguagem de programacao
 
-	  int n=4, m = 0; // n é o numero para se calcular o fatorial
-	  int r = 1;
+      int n=4, m = 0; // n é o numero para se calcular o fatorial
+      int r = 1;
 
-	  while (n > 0) {
-	    
-	    m = n;
-	    int t = 0;
-	    while(m > 0){
-	        t = t + r;
-	        m = m - 1;
-	    }
-	    r = t;
-	    n = n - 1;
-	  }
+      while (n > 0) {
+        
+        m = n;
+        int t = 0;
+        while(m > 0){
+            t = t + r;
+            m = m - 1;
+        }
+        r = t;
+        n = n - 1;
+      }
 
 -}
 
@@ -47,23 +47,23 @@ fatorial = Seq fatAtribN (Seq fatAtribM (Seq fatAtribR fatLoop1))
 resultFat = value (evalCommands fatorial memoryFat) 'r'
 
 {-
-	Programa 02: Calculo da multiplicacao com apenas somas
+    Programa 02: Calculo da multiplicacao com apenas somas
 
-	Em outra lingugem de programacao
+    Em outra lingugem de programacao
 
-	  int n=3, m=3; // multiplicando e multiplicador da multiplicacao
-	  int r = 0;
-	 if(n >= 0){
-	    while(n > 0){
-	         r = r+m;
-    	     n = n - 1;
-	    }
-	 }else{
-	      do{
-    	     r = r-m;
-    	     n = n + 1;
-	    }while(n < 0);
-	 }
+      int n=3, m=3; // multiplicando e multiplicador da multiplicacao
+      int r = 0;
+     if(n >= 0){
+        while(n > 0){
+             r = r+m;
+             n = n - 1;
+        }
+     }else{
+          do{
+             r = r-m;
+             n = n + 1;
+        }while(n < 0);
+     }
 
 -}
 
@@ -73,7 +73,7 @@ multAtribN = Atrib 'n' (L 3) -- numero multiplicando
 multAtribM = Atrib 'm' (L 3) -- numero multiplicador
 multAtribR = Atrib 'r' (L 0) -- variavel para guardar o resultado
 multExp1If = Great (V 'n') (L 0) -- expressao do if se n > 0
-multExp2If = Equal (V 'n') (L 0) -- expressao do if se n = 0	
+multExp2If = Equal (V 'n') (L 0) -- expressao do if se n = 0    
 multBoolLoop1 = Great (V 'n') (L 0) -- expressao n > 0 do primeiro loop
 multAtrib1Loop1 = Atrib 'r' (Add (V 'r') (V 'm')) -- r = r + m
 multAtrib2Loop1 = Atrib 'n' (Sub (V 'n') (L 1)) -- n = n - 1
@@ -92,17 +92,17 @@ multiplicao = Seq multAtribN (Seq multAtribM (Seq multAtribR multIf))
 resultMult = value (evalCommands multiplicao memoryMult) 'r'
 
 {-
-	Programa 03: calculo da potencia 
+    Programa 03: calculo da potencia 
 
-	Em outra lingugem de programacao
+    Em outra lingugem de programacao
 
-	 int b=-3, e=2; // base e expoente da potencia
-	 int r = 1;
-	 
-	 while(e > 0){
-	     r = b * r;
-	     e = e - 1;
-	 }
+     int b=-3, e=2; // base e expoente da potencia
+     int r = 1;
+     
+     while(e > 0){
+         r = b * r;
+         e = e - 1;
+     }
 -}
 
 memoryPot = initial
@@ -121,14 +121,14 @@ potencia = Seq potAtribB (Seq potAtribE (Seq potAtribE (Seq potAtribR potLoop)))
 resultPot = value (evalCommands potencia memoryPot) 'r'
 
 {-
-	Programa 04: calculo da divisão inteira 
+    Programa 04: calculo da divisão inteira 
 
-	Em outra lingugem de programacao
+    Em outra lingugem de programacao
 
-	 int a=12, b=3; // dividendo e divisor da divisão inteira
-	 int r = 0;
-	 
-	 r = a/b;
+     int a=12, b=3; // dividendo e divisor da divisão inteira
+     int r = 0;
+     
+     r = a/b;
 -}
 
 memoryDiv = initial
@@ -143,12 +143,12 @@ divisao = Seq divAtribB (Seq divAtribE (Atrib 'r' divInt))
 resultDiv = value (evalCommands divisao memoryDiv) 'r'
 
 {-
-	Programa 05: Calculo do MDC (maximo divisor comum)
-	Foi utilizado o algoritmo de euclides
-	
-	Em outra lingugem de programacao
+    Programa 05: Calculo do MDC (maximo divisor comum)
+    Foi utilizado o algoritmo de euclides
+    
+    Em outra lingugem de programacao
 
-	int a=12, b = 9;
+    int a=12, b = 9;
     a = abs(a);
     b = abs(b);
     

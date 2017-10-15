@@ -14,28 +14,28 @@ data BoolExp =  B Bool                | No BoolExp          |
                 Equal AritExp AritExp  deriving (Show,Eq,Ord)
                 
 -- Data que guarda os comandos para nossa lingugagem
-data Commands = Nop								  | Atrib Char AritExp                |
-                Seq Commands Commands             | Choice BoolExp Commands Commands  | -- Choice seria um If then else
-                Loop1 BoolExp Commands 			  |	Loop2  Commands BoolExp	deriving (Show)
+data Commands = Nop                          | Atrib Char AritExp                |
+                Seq Commands Commands        | Choice BoolExp Commands Commands  | -- Choice seria um If then else
+                Loop1 BoolExp Commands       |    Loop2  Commands BoolExp    deriving (Show)
 
 evalBoolExp::BoolExp -> Store -> Bool
-evalBoolExp (B val) _ 				= val -- testado
-evalBoolExp (No exp1) store 		=  not (evalBoolExp exp1 store) -- testado
-evalBoolExp (And' exp1 exp2) store 	= (evalBoolExp exp1 store) && (evalBoolExp exp2 store) -- testado
-evalBoolExp (Or' exp1 exp2) store 	= (evalBoolExp exp1 store) || (evalBoolExp exp2 store) -- testado
+evalBoolExp (B val) _ = val -- testado
+evalBoolExp (No exp1) store =  not (evalBoolExp exp1 store) -- testado
+evalBoolExp (And' exp1 exp2) store = (evalBoolExp exp1 store) && (evalBoolExp exp2 store) -- testado
+evalBoolExp (Or' exp1 exp2) store = (evalBoolExp exp1 store) || (evalBoolExp exp2 store) -- testado
 evalBoolExp (Great exp1 exp2) store = (evalAritExp exp1 store) > (evalAritExp exp2 store) -- testado
-evalBoolExp (Less exp1 exp2) store 	= (evalAritExp exp1 store) < (evalAritExp exp2 store) -- testado
+evalBoolExp (Less exp1 exp2) store = (evalAritExp exp1 store) < (evalAritExp exp2 store) -- testado
 evalBoolExp (Equal exp1 exp2) store = ( evalAritExp exp1 store) == (evalAritExp exp2 store) -- testado
 
 evalAritExp:: AritExp-> Store -> Integer
-evalAritExp (L val) _ 				= val -- testado
-evalAritExp (V c) store 			= value store c -- testado
-evalAritExp (Sub exp1 exp2) store 	= (evalAritExp exp1 store) - (evalAritExp exp2 store) -- testado
-evalAritExp (Add exp1 exp2) store 	= (evalAritExp exp1 store) + (evalAritExp exp2 store) -- testado
-evalAritExp (Mult exp1 exp2) store 	= (evalAritExp exp1 store) * (evalAritExp exp2 store) -- testado
-evalAritExp (Div exp1 exp2) store 	= (evalAritExp exp1 store) `div` (evalAritExp exp2 store) -- testado
-evalAritExp (Mod' exp1 exp2) store      = (evalAritExp exp1 store) `mod` (evalAritExp exp2 store) -- testado
-evalAritExp (Abs' exp1) store           = abs (evalAritExp exp1 store) -- testado
+evalAritExp (L val) _ = val -- testado
+evalAritExp (V c) store = value store c -- testado
+evalAritExp (Sub exp1 exp2) store = (evalAritExp exp1 store) - (evalAritExp exp2 store) -- testado
+evalAritExp (Add exp1 exp2) store = (evalAritExp exp1 store) + (evalAritExp exp2 store) -- testado
+evalAritExp (Mult exp1 exp2) store = (evalAritExp exp1 store) * (evalAritExp exp2 store) -- testado
+evalAritExp (Div exp1 exp2) store  = (evalAritExp exp1 store) `div` (evalAritExp exp2 store) -- testado
+evalAritExp (Mod' exp1 exp2) store = (evalAritExp exp1 store) `mod` (evalAritExp exp2 store) -- testado
+evalAritExp (Abs' exp1) store = abs (evalAritExp exp1 store) -- testado
 
 evalCommands::Commands -> Store -> Store
 evalCommands (Nop) store = store
@@ -47,12 +47,12 @@ evalCommands ( Loop2 comd expbool) store = funcLoop expbool comd store
 
 funcChoice :: BoolExp -> Commands -> Commands -> Store -> Commands
 funcChoice expBool comd1 comd2 store
-	| evalBoolExp expBool store = comd1
-	| otherwise = comd2
+    | evalBoolExp expBool store = comd1
+    | otherwise = comd2
 
 funcLoop :: BoolExp -> Commands -> Store -> Store
 funcLoop expBool comd store
-	| evalBoolExp expBool store =  funcLoop expBool comd command 
-	| otherwise = store
-		where
-			command = evalCommands comd store
+    | evalBoolExp expBool store =  funcLoop expBool comd command 
+    | otherwise = store
+        where
+            command = evalCommands comd store
