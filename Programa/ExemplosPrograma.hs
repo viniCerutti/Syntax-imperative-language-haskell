@@ -1,6 +1,12 @@
+{-
+	T1 - Programacao Funcional 2017/2
+	Vinicius Cerutti
+	Dimas Olympio
+-}
+
 module ExemplosPrograma where
 
-import T1ProgFuncional
+import InterpLingImpHaskell
 import Store
 
 {-
