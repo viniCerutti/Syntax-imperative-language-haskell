@@ -5,7 +5,7 @@ import Store
 data AritExp =  L Integer                | Sub AritExp AritExp |
                 Add AritExp AritExp      | Mult AritExp AritExp|
                 Div AritExp AritExp      | Mod' AritExp AritExp|
-                V Char  deriving (Show,Eq,Ord)
+                Abs' AritExp             | V Char  deriving (Show,Eq,Ord)
             
 -- Data que guarda as operacoes logicas
 data BoolExp =  B Bool                | No BoolExp          |
@@ -34,8 +34,8 @@ evalAritExp (Sub exp1 exp2) store 	= (evalAritExp exp1 store) - (evalAritExp exp
 evalAritExp (Add exp1 exp2) store 	= (evalAritExp exp1 store) + (evalAritExp exp2 store) -- testado
 evalAritExp (Mult exp1 exp2) store 	= (evalAritExp exp1 store) * (evalAritExp exp2 store) -- testado
 evalAritExp (Div exp1 exp2) store 	= (evalAritExp exp1 store) `div` (evalAritExp exp2 store) -- testado
-evalAritExp (Mod' exp1 exp2) store       = (evalAritExp exp1 store) `mod` (evalAritExp exp2 store) -- testado
-
+evalAritExp (Mod' exp1 exp2) store      = (evalAritExp exp1 store) `mod` (evalAritExp exp2 store) -- testado
+evalAritExp (Abs' exp1) store           = abs (evalAritExp exp1 store) -- testado
 
 evalCommands::Commands -> Store -> Store
 evalCommands (Nop) store = store
