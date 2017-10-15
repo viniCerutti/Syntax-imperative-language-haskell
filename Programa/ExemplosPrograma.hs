@@ -91,3 +91,32 @@ multIf = Choice (Or' multExp1If multExp2If) multLoop1 multLoop2
 multiplicao = Seq multAtribN (Seq multAtribM (Seq multAtribR multIf))
 
 resultMult = value (evalCommands multiplicao memoryMult) 'r'
+
+{-
+	Programa 03 : calculo da potencia 
+
+	Em outra lingugem de programacao
+
+	 int b=-3, e=2; // base e expoente da potencia
+	 int r = 1;
+	 
+	 while(e > 0){
+	     r = b * r;
+	     e = e - 1;
+	 }
+-}
+
+memoryPot = initial
+
+potAtribB = Atrib 'b' (L 3) -- numero base
+potAtribE = Atrib 'e' (L 3) -- numero expoente
+potAtribR = Atrib 'r' (L 1) -- variavel para guardar o resultado
+potBoolLoop = Great (V 'e') (L 0) -- expressao e > 0 do loop
+potAtrib1Loop = Atrib 'r' (Mult (V 'b') (V 'r')) -- r = r * b
+potAtrib2Loop = Atrib 'e' (Sub (V 'e') (L 1)) -- e = e - 1
+
+potLoop = Loop1 potBoolLoop (Seq potAtrib1Loop potAtrib2Loop)
+
+potencia = Seq potAtribB (Seq potAtribE (Seq potAtribE (Seq potAtribR potLoop)))
+
+resultPot = value (evalCommands potencia memoryPot) 'r'
