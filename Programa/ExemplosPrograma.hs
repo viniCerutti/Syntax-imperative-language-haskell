@@ -93,7 +93,7 @@ multiplicao = Seq multAtribN (Seq multAtribM (Seq multAtribR multIf))
 resultMult = value (evalCommands multiplicao memoryMult) 'r'
 
 {-
-	Programa 03 : calculo da potencia 
+	Programa 03: calculo da potencia 
 
 	Em outra lingugem de programacao
 
@@ -120,3 +120,25 @@ potLoop = Loop1 potBoolLoop (Seq potAtrib1Loop potAtrib2Loop)
 potencia = Seq potAtribB (Seq potAtribE (Seq potAtribE (Seq potAtribR potLoop)))
 
 resultPot = value (evalCommands potencia memoryPot) 'r'
+
+{-
+	Programa 04: calculo da divisão inteira 
+
+	Em outra lingugem de programacao
+
+	 int a=-3, b=2; // dividendo e divisor da divisão inteira
+	 int r = 0;
+	 
+	 r = a/b;
+-}
+
+memoryDiv = initial
+
+divAtribB = Atrib 'a' (L 13) -- numero dividendo
+divAtribE = Atrib 'b' (L 3) -- numero divisor
+divAtribR = Atrib 'r' (L 0) -- variavel para guardar o resultado
+divInt = Div (V 'a') (V 'b') -- a/b
+
+divisao = Seq divAtribB (Seq divAtribE (Atrib 'r' divInt))
+
+resultDiv = value (evalCommands divisao memoryDiv) 'r'
