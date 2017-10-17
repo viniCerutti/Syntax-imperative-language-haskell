@@ -22,7 +22,7 @@ data BoolExp =  B Bool                | No BoolExp          |
 -- Data que guarda os comandos para nossa lingugagem
 data Commands = Nop                          | Atrib Char AritExp                |
                 Seq Commands Commands        | Choice BoolExp Commands Commands  | -- Choice seria um If then else
-                Loop1 BoolExp Commands       |    Loop2  Commands BoolExp    deriving (Show)
+                While BoolExp Commands       | Dowhile  Commands BoolExp    deriving (Show)
 
 evalBoolExp::BoolExp -> Store -> Bool
 evalBoolExp (B val) _ = val -- testado
@@ -48,8 +48,8 @@ evalCommands (Nop) store = store
 evalCommands (Atrib name val) store = update store name (evalAritExp val store)
 evalCommands (Seq comd1 comd2) store =  (evalCommands comd2 (evalCommands comd1 store)) -- comd2 utiliza o store do comd1
 evalCommands (Choice expbool comd1 comd2) store = evalCommands (funcChoice expbool comd1 comd2 store) store
-evalCommands ( Loop1 expbool comd) store = funcLoop expbool comd store
-evalCommands ( Loop2 comd expbool) store = funcLoop expbool comd store
+evalCommands ( While expbool comd) store = funcLoop expbool comd store
+evalCommands ( Dowhile comd expbool) store = funcLoop expbool comd store
 
 funcChoice :: BoolExp -> Commands -> Commands -> Store -> Commands
 funcChoice expBool comd1 comd2 store
@@ -62,3 +62,22 @@ funcLoop expBool comd store
     | otherwise = store
         where
             command = evalCommands comd store
+
+variables :: Commands -> Store -> IO()
+variables prog store = putStrLn (formatText memIniVariables calcProgStore)
+        where
+            calcProgStore = evalCommands prog store
+            memIniVariables = findSimTerms store calcProgStore
+            formatText:: Store -> Store -> String
+            formatText storeI storeF = "StoreIni = "++storeIni++"\n"++traceStr++"\nStoreFin = "++storeFin
+                where
+                    storeIni = show storeIni
+                    storeFin = show storeFin
+                    traceNumber = max (length storeIni) (length storeFin)
+                    traceStr = copyChar '-' traceNumber
+
+                    copyChar:: Char -> Int -> String
+                    copyChar c num
+                        | num <=0 = ""
+                        |otherwise = copyChar c (num-1)++[c]
+
