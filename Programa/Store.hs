@@ -14,17 +14,21 @@ module Store
      initial,     -- Store
      value,       -- Store -> Var -> Integer
      update,       -- Store -> Var -> Integer -> Store
-     findSimTerms  -- Store -> Store -> Store
+     findSimTerms,  -- Store -> Store -> Store
+     orderStore		-- Store -> Store
     ) where
 
 -- Var is the type of variables.                    
+
+import Data.List
+import Data.Ord
 
 type Var = Char
 
 -- The implementation is given by a newtype declaration, with one
 -- constructor, taking an argument of type [ (Integer,Var) ].
 
-data Store = Store [ (Integer,Var) ] 
+data Store = Store [ (Integer,Var) ]
 
 instance Eq Store where 
   (Store sto1) == (Store sto2) = (sto1 == sto2)                 
@@ -63,3 +67,6 @@ findSimTerms (Store ((n1,w1):sto)) sto2
 		isterm carct (Store ((n,w):sto))
 			| carct == w = True
 			|otherwise = isterm carct (Store sto)
+
+orderStore::Store -> Store
+orderStore (Store lst) = (Store (sortBy (comparing snd) lst))

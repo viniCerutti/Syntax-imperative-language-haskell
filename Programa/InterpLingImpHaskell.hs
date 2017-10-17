@@ -7,6 +7,7 @@
 module InterpLingImpHaskell where
 
 import Store
+
 -- Data que guarda as operacoes aritmeticas
 data AritExp =  L Integer                | Sub AritExp AritExp |
                 Add AritExp AritExp      | Mult AritExp AritExp|
@@ -71,8 +72,8 @@ variables prog store = putStrLn (formatText memIniVariables calcProgStore)
             formatText:: Store -> Store -> String
             formatText storeI storeF = traceStr++"\nStoreIni = "++storeIni++"\n"++traceStr++"\nStoreFin = "++storeFin++"\n"++traceStr
                 where
-                    storeIni = show storeI
-                    storeFin = show storeF
+                    storeIni = show (orderStore storeI)
+                    storeFin = show (orderStore storeF)
                     traceNumber = max (length storeIni) (length storeFin)
                     traceStr = copyChar '-' traceNumber
 
