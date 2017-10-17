@@ -66,7 +66,7 @@ funcLoop expBool comd store
 variables :: Commands -> Store -> IO()
 variables prog store = putStrLn (formatText memIniVariables calcProgStore)
         where
-            calcProgStore = evalCommands prog store
+            calcProgStore = evalCommands prog initial
             memIniVariables = findSimTerms store calcProgStore
             formatText:: Store -> Store -> String
             formatText storeI storeF = traceStr++"\nStoreIni = "++storeIni++"\n"++traceStr++"\nStoreFin = "++storeFin++"\n"++traceStr
