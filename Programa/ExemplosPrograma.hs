@@ -45,8 +45,8 @@ fatAtrib2Loop2 = Atrib 'm' (Sub (V 'm') (L 1)) -- m = m - 1
 fatAtrib3Loop1 = Atrib 'r' (V 't') -- r = t
 fatAtrib4Loop1 = Atrib 'n' (Sub (V 'n') (L 1)) -- n = n - 1
 
-fatLoop2 = Loop1 fatBoolLoop2 (Seq fatAtrib1Loop2 fatAtrib2Loop2)
-fatLoop1 = Loop1 fatBoolLoop1 (Seq fatAtrib1Loop1 (Seq fatAtrib2Loop1 (Seq fatLoop2 (Seq fatAtrib3Loop1 fatAtrib4Loop1))))
+fatLoop2 = While fatBoolLoop2 (Seq fatAtrib1Loop2 fatAtrib2Loop2)
+fatLoop1 = While fatBoolLoop1 (Seq fatAtrib1Loop1 (Seq fatAtrib2Loop1 (Seq fatLoop2 (Seq fatAtrib3Loop1 fatAtrib4Loop1))))
 
 fatorial = Seq fatAtribN (Seq fatAtribM (Seq fatAtribR fatLoop1))
 
@@ -88,8 +88,8 @@ multAtrib1Loop2 = Atrib 'r' (Sub (V 'r') (V 'm')) -- r = r + m
 multAtrib2Loop2 = Atrib 'n' (Add (V 'n') (L 1)) -- n = n - 1
 
 
-multLoop1 = Loop1 multBoolLoop1 (Seq multAtrib1Loop1 multAtrib2Loop1)
-multLoop2 = Loop2 (Seq multAtrib1Loop2 multAtrib2Loop2) multBoolLoop2
+multLoop1 = While multBoolLoop1 (Seq multAtrib1Loop1 multAtrib2Loop1)
+multLoop2 = Dowhile (Seq multAtrib1Loop2 multAtrib2Loop2) multBoolLoop2
 
 multIf = Choice (Or' multExp1If multExp2If) multLoop1 multLoop2
 
@@ -120,7 +120,7 @@ potBoolLoop = Great (V 'e') (L 0) -- expressao e > 0 do loop
 potAtrib1Loop = Atrib 'r' (Mult (V 'b') (V 'r')) -- r = r * b
 potAtrib2Loop = Atrib 'e' (Sub (V 'e') (L 1)) -- e = e - 1
 
-potLoop = Loop1 potBoolLoop (Seq potAtrib1Loop potAtrib2Loop)
+potLoop = While potBoolLoop (Seq potAtrib1Loop potAtrib2Loop)
 
 potencia = Seq potAtribB (Seq potAtribE (Seq potAtribE (Seq potAtribR potLoop)))
 
@@ -176,7 +176,7 @@ mdcAtrib1Loop = Atrib 't' (V 'b') -- int t = b;
 mdcAtrib2Loop = Atrib 'b' (Mod' (V 'a') (V 'b')) -- b = a % b;
 mdcAtrib3Loop = Atrib 'a' (V 't') -- a = t;
 
-mdcLoop = Loop1 mdcBoolLoop (Seq mdcAtrib1Loop (Seq mdcAtrib2Loop mdcAtrib3Loop))
+mdcLoop = While mdcBoolLoop (Seq mdcAtrib1Loop (Seq mdcAtrib2Loop mdcAtrib3Loop))
 
 mdc = Seq mdcAtribA (Seq mdcAtribB (Seq mdcAtribAbs1 (Seq mdcAtribAbs2 mdcLoop)))
 
