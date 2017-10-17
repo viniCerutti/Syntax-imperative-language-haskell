@@ -69,10 +69,10 @@ variables prog store = putStrLn (formatText memIniVariables calcProgStore)
             calcProgStore = evalCommands prog store
             memIniVariables = findSimTerms store calcProgStore
             formatText:: Store -> Store -> String
-            formatText storeI storeF = "StoreIni = "++storeIni++"\n"++traceStr++"\nStoreFin = "++storeFin
+            formatText storeI storeF = traceStr++"\nStoreIni = "++storeIni++"\n"++traceStr++"\nStoreFin = "++storeFin++"\n"++traceStr
                 where
-                    storeIni = show storeIni
-                    storeFin = show storeFin
+                    storeIni = show storeI
+                    storeFin = show storeF
                     traceNumber = max (length storeIni) (length storeFin)
                     traceStr = copyChar '-' traceNumber
 
