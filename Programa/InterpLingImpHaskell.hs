@@ -65,10 +65,12 @@ funcLoop expBool comd store
             command = evalCommands comd store
 
 variables :: Commands -> Store -> IO()
-variables prog store = putStrLn (formatText memIniVariables calcProgStore)
+variables prog store = putStrLn (formatText memIniVariables memFinVariavles)
         where
-            calcProgStore = evalCommands prog initial
-            memIniVariables = findSimTerms store calcProgStore
+            progVariables = evalCommands prog initial
+            memProg = evalCommands prog store
+            memFinVariavles = findSimTerms memProg progVariables
+            memIniVariables = findSimTerms store progVariables
             formatText:: Store -> Store -> String
             formatText storeI storeF = traceStr++"\nStoreIni = "++storeIni++"\n"++traceStr++"\nStoreFin = "++storeFin++"\n"++traceStr
                 where
@@ -81,4 +83,5 @@ variables prog store = putStrLn (formatText memIniVariables calcProgStore)
                     copyChar c num
                         | num <=0 = ""
                         |otherwise = copyChar c (num-1)++[c]
+
 
