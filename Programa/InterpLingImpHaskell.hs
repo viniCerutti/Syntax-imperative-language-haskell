@@ -7,12 +7,17 @@
 module InterpLingImpHaskell where
 
 import Store
+import Data.List
+
+
+type Var = Char
+type ValueVar = Integer
 
 -- Data que guarda as operacoes aritmeticas
-data AritExp =  L Integer                | Sub AritExp AritExp |
+data AritExp =  L ValueVar                | Sub AritExp AritExp |
                 Add AritExp AritExp      | Mult AritExp AritExp|
                 Div AritExp AritExp      | Mod' AritExp AritExp|
-                Abs' AritExp             | V Char  deriving (Show,Eq,Ord)
+                Abs' AritExp             | V Var  deriving (Show,Eq,Ord)
             
 -- Data que guarda as operacoes logicas
 data BoolExp =  B Bool                | No BoolExp          |
@@ -21,7 +26,7 @@ data BoolExp =  B Bool                | No BoolExp          |
                 Equal AritExp AritExp  deriving (Show,Eq,Ord)
                 
 -- Data que guarda os comandos para nossa lingugagem
-data Commands = Nop                          | Atrib Char AritExp                |
+data Commands = Nop                          | Atrib Var AritExp                |
                 Seq Commands Commands        | Choice BoolExp Commands Commands  | -- Choice seria um If then else
                 While BoolExp Commands       | Dowhile  Commands BoolExp    deriving (Show)
 
@@ -34,7 +39,7 @@ evalBoolExp (Great exp1 exp2) store = (evalAritExp exp1 store) > (evalAritExp ex
 evalBoolExp (Less exp1 exp2) store = (evalAritExp exp1 store) < (evalAritExp exp2 store) -- testado
 evalBoolExp (Equal exp1 exp2) store = ( evalAritExp exp1 store) == (evalAritExp exp2 store) -- testado
 
-evalAritExp:: AritExp-> Store -> Integer
+evalAritExp:: AritExp-> Store -> ValueVar
 evalAritExp (L val) _ = val -- testado
 evalAritExp (V c) store = value store c -- testado
 evalAritExp (Sub exp1 exp2) store = (evalAritExp exp1 store) - (evalAritExp exp2 store) -- testado
@@ -64,18 +69,18 @@ funcLoop expBool comd store
         where
             command = evalCommands comd store
 
-variables :: Commands -> Store -> IO()
-variables prog store = putStrLn (formatText memIniVariables memFinVariavles)
+pretty_printing :: Commands -> Store -> IO()
+pretty_printing prog store = putStrLn (formatText memIniVariables memFinVariavles)
         where
-            progVariables = evalCommands prog initial
+            progVariables = getVars prog
             memProg = evalCommands prog store
-            memFinVariavles = findSimTerms memProg progVariables
-            memIniVariables = findSimTerms store progVariables
-            formatText:: Store -> Store -> String
+            memFinVariavles = getVarMem progVariables memProg 
+            memIniVariables = getVarMem progVariables store 
+            formatText:: [(ValueVar,Var)] -> [(ValueVar,Var)] -> String
             formatText storeI storeF = traceStr++"\nStoreIni = "++storeIni++"\n"++traceStr++"\nStoreFin = "++storeFin++"\n"++traceStr
                 where
-                    storeIni = show (orderStore storeI)
-                    storeFin = show (orderStore storeF)
+                    storeIni = show storeI
+                    storeFin = show storeF
                     traceNumber = max (length storeIni) (length storeFin)
                     traceStr = copyChar '-' traceNumber
 
@@ -85,3 +90,18 @@ variables prog store = putStrLn (formatText memIniVariables memFinVariavles)
                         |otherwise = copyChar c (num-1)++[c]
 
 
+getVars:: Commands -> [Var]
+getVars comd =  (nub . getVarsAux) comd
+    where
+        getVarsAux (Nop) = []
+        getVarsAux (Atrib name val) = [name]
+        getVarsAux (Seq comd1 comd2) =  (getVarsAux comd2)++(getVarsAux comd1)
+        getVarsAux (Choice _ comd1 comd2) = (getVarsAux comd1)++(getVarsAux comd2)
+        getVarsAux ( While _ comd) = getVarsAux comd
+        getVarsAux ( Dowhile comd _ ) = getVarsAux comd
+
+getVarMem::[Var] -> Store -> [(ValueVar,Var)]
+getVarMem [] _ = []
+getVarMem (name:xs) store = (number,name):getVarMem xs store
+    where
+        number = value store name
