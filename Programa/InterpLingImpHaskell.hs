@@ -40,25 +40,25 @@ data Commands = Nop                          | Atrib Var AritExp                
 -- Fucao que avalia (evaluate) as expressoes aritmeticas
 
 evalAritExp:: AritExp-> Store -> ValueVar
-evalAritExp (L val) _ = val -- testado
-evalAritExp (V c) store = value store c -- testado
-evalAritExp (Sub exp1 exp2) store = (evalAritExp exp1 store) - (evalAritExp exp2 store) -- testado
-evalAritExp (Add exp1 exp2) store = (evalAritExp exp1 store) + (evalAritExp exp2 store) -- testado
-evalAritExp (Mult exp1 exp2) store = (evalAritExp exp1 store) * (evalAritExp exp2 store) -- testado
-evalAritExp (Div exp1 exp2) store  = (evalAritExp exp1 store) `div` (evalAritExp exp2 store) -- testado
-evalAritExp (Mod' exp1 exp2) store = (evalAritExp exp1 store) `mod` (evalAritExp exp2 store) -- testado
-evalAritExp (Abs' exp1) store = abs (evalAritExp exp1 store) -- testado
+evalAritExp (L val) _ = val 
+evalAritExp (V c) store = value store c 
+evalAritExp (Sub exp1 exp2) store = (evalAritExp exp1 store) - (evalAritExp exp2 store) 
+evalAritExp (Add exp1 exp2) store = (evalAritExp exp1 store) + (evalAritExp exp2 store) 
+evalAritExp (Mult exp1 exp2) store = (evalAritExp exp1 store) * (evalAritExp exp2 store) 
+evalAritExp (Div exp1 exp2) store  = (evalAritExp exp1 store) `div` (evalAritExp exp2 store) 
+evalAritExp (Mod' exp1 exp2) store = (evalAritExp exp1 store) `mod` (evalAritExp exp2 store) 
+evalAritExp (Abs' exp1) store = abs (evalAritExp exp1 store) 
 
 -- Fucao que avalia (evaluate) as expressoes logicas
 
 evalBoolExp::BoolExp -> Store -> Bool
-evalBoolExp (B val) _ = val -- testado
-evalBoolExp (No exp1) store =  not (evalBoolExp exp1 store) -- testado
-evalBoolExp (And' exp1 exp2) store = (evalBoolExp exp1 store) && (evalBoolExp exp2 store) -- testado
-evalBoolExp (Or' exp1 exp2) store = (evalBoolExp exp1 store) || (evalBoolExp exp2 store) -- testado
-evalBoolExp (Great exp1 exp2) store = (evalAritExp exp1 store) > (evalAritExp exp2 store) -- testado
-evalBoolExp (Less exp1 exp2) store = (evalAritExp exp1 store) < (evalAritExp exp2 store) -- testado
-evalBoolExp (Equal exp1 exp2) store = ( evalAritExp exp1 store) == (evalAritExp exp2 store) -- testado
+evalBoolExp (B val) _ = val 
+evalBoolExp (No exp1) store =  not (evalBoolExp exp1 store) 
+evalBoolExp (And' exp1 exp2) store = (evalBoolExp exp1 store) && (evalBoolExp exp2 store) 
+evalBoolExp (Or' exp1 exp2) store = (evalBoolExp exp1 store) || (evalBoolExp exp2 store) 
+evalBoolExp (Great exp1 exp2) store = (evalAritExp exp1 store) > (evalAritExp exp2 store) 
+evalBoolExp (Less exp1 exp2) store = (evalAritExp exp1 store) < (evalAritExp exp2 store) 
+evalBoolExp (Equal exp1 exp2) store = ( evalAritExp exp1 store) == (evalAritExp exp2 store) 
 
 -- Fucao que avalia (evaluate) a sintaxe do programa
 
