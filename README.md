@@ -4,6 +4,7 @@ Trabalho I da Disciplina Programação Funcional - 2017/2 PUCRS Ministrada pelo 
 
 # Autores #
 Dimas Olympio
+
 Vinicius Cerutti
 
 # Sobre os arquivos #
