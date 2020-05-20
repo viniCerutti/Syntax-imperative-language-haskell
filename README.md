@@ -1,6 +1,6 @@
 # T1 - Programação Funcional #
 ## Descrição ##
-Trabalho I da Disciplina Programação Funcional - 2017/2 com objetivo de definir uma semântica de uma linguagem imperativa. A linguagem deve ter comandos para modelar atribuição, sequência, escolha, comando neutro (que não faz nada), e pelo menos dois tipos de comandos para laços.
+Trabalho I da Disciplina Programação Funcional - 2017/2 com objetivo de definir uma sintaxe de uma linguagem imperativa. A linguagem deve ter comandos para modelar atribuição, sequência, escolha, comando neutro (que não faz nada), e pelo menos dois tipos de comandos para laços.
 
 ## Sobre os arquivos ##
 ### Programa (Pasta) ###
